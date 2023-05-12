@@ -1,0 +1,7 @@
+2023-05-06 23:07:54,081 INFO o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-06 23:07:54,083 INFO com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2023-05-06 23:07:54,086 INFO com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2023-05-06 23:08:13,738 ERROR c.d.n.payment.PaymentRepository - Payment exception: Duplicate payment order ID
+2023-05-06 23:08:13,740 ERROR c.d.n.payment.PaymentRequest - Duplicate payment order ID
+2023-05-06 23:09:46,191 ERROR c.d.n.payment.PaymentRepository - Payment exception: Duplicate payment order ID
+2023-05-06 23:09:46,193 ERROR c.d.n.payment.PaymentRequest - Duplicate payment order ID
