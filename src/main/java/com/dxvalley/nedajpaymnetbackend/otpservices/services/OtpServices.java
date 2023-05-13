@@ -1,4 +1,9 @@
-package com.dxvalley.nedajpaymnetbackend.otpservices;
+package com.dxvalley.nedajpaymnetbackend.otpservices.services;
+
+import com.dxvalley.nedajpaymnetbackend.otpservices.exception.OtpCustomeException;
+import com.dxvalley.nedajpaymnetbackend.otpservices.repo.OtpRepository;
+import com.dxvalley.nedajpaymnetbackend.otpservices.payload.OtpRequest;
+import com.dxvalley.nedajpaymnetbackend.otpservices.models.OtpSendModel;
 import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -7,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -45,24 +51,24 @@ public class OtpServices {
                 System.out.println("Actual response is: " + res);
                 JSONObject checkStatus = new JSONObject(res.getBody());
                 String updateStatusConfirm = checkStatus.getString("status");
-                OtpSendModel newRegister=new OtpSendModel();
+                OtpSendModel newRegister = new OtpSendModel();
                 if (res.getStatusCode() == HttpStatus.OK && updateStatusConfirm.equals("Success")) {
                     newRegister.setOtpNumber(generatedOtpNumber);
                     newRegister.setStatus("Pending");
                     newRegister.setResponseCode("200");
                     newRegister.setMobile(otpReq.getMobile());
                     repository.save(newRegister);
-                }else {
+                } else {
                     newRegister.setOtpNumber(generatedOtpNumber);
                     newRegister.setStatus("Failure");
                     newRegister.setResponseCode("400");
                     newRegister.setMobile(otpReq.getMobile());
                     repository.save(newRegister);
-                    throw new OtpCustomeException(400,"Failure T24");
+                    throw new OtpCustomeException(400, "Failure T24");
                 }
             }
             JSONObject responseAfterSendingOtp = new JSONObject(res.getBody());
-            System.out.println("The final response is:"+responseAfterSendingOtp);
+            System.out.println("The final response is:" + responseAfterSendingOtp);
             return responseAfterSendingOtp.toString();
 
         } catch (Exception e) {
@@ -71,17 +77,19 @@ public class OtpServices {
     }
 
     public String generateAndRegisterOtp() {
-//        HashSet<String> uuidSet = new HashSet<>();
-//        while (true) {
-//            String uuid = UUID.randomUUID().toString().substring(0, 6);
-//            if (!uuidSet.contains(uuid)) {
-//                uuidSet.add(uuid);
-//                System.out.println("Generated otp is:" + uuid);
-//            }
-//        }
-        Random rnd = new Random();
-        int number = rnd.nextInt(999999);
-        return String.format("%06d", number);
+        int length = 6;
+        Set<Integer> generated = new HashSet<>();
+        StringBuilder sb = new StringBuilder(length);
+        Random random = new Random();
+        while (generated.size() < length) {
+            int num = random.nextInt(10);
+            if (!generated.contains(num)) {
+                generated.add(num);
+                sb.append(num);
+            }
+        }
+        String randomString = sb.toString();
+        return randomString;
     }
 
 }

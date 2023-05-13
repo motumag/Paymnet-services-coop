@@ -1,4 +1,4 @@
-package com.dxvalley.nedajpaymnetbackend.otpservices;
+package com.dxvalley.nedajpaymnetbackend.otpservices.exception;
 
 public class OtpCustomeException extends Exception{
     private int status;

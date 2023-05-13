@@ -1,4 +1,7 @@
-package com.dxvalley.nedajpaymnetbackend.otpservices;
+package com.dxvalley.nedajpaymnetbackend.otpservices.controller;
+import com.dxvalley.nedajpaymnetbackend.otpservices.exception.OtpCustomeException;
+import com.dxvalley.nedajpaymnetbackend.otpservices.payload.OtpRequest;
+import com.dxvalley.nedajpaymnetbackend.otpservices.services.OtpServices;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

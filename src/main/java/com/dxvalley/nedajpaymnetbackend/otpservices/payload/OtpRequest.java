@@ -1,4 +1,4 @@
-package com.dxvalley.nedajpaymnetbackend.otpservices;
+package com.dxvalley.nedajpaymnetbackend.otpservices.payload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

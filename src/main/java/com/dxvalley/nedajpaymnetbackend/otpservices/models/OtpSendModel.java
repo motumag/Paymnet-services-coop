@@ -1,4 +1,4 @@
-package com.dxvalley.nedajpaymnetbackend.otpservices;
+package com.dxvalley.nedajpaymnetbackend.otpservices.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;

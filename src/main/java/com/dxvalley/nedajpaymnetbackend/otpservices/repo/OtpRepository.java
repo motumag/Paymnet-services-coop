@@ -1,4 +1,5 @@
-package com.dxvalley.nedajpaymnetbackend.otpservices;
+package com.dxvalley.nedajpaymnetbackend.otpservices.repo;
+import com.dxvalley.nedajpaymnetbackend.otpservices.models.OtpSendModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
