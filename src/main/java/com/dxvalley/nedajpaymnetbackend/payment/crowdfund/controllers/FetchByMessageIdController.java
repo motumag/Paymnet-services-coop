@@ -3,7 +3,6 @@ package com.dxvalley.nedajpaymnetbackend.payment.crowdfund.controllers;
 import com.dxvalley.nedajpaymnetbackend.payment.crowdfund.models.CrowdFundModel;
 import com.dxvalley.nedajpaymnetbackend.payment.crowdfund.payloads.CrowdFundRequest;
 import com.dxvalley.nedajpaymnetbackend.payment.crowdfund.repository.CrowdFunRepository;
-import com.dxvalley.nedajpaymnetbackend.sendOtpAndConfirm.OtpRepository;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +14,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/payment/services/v1/crowdfund")
 public class FetchByMessageIdController {
     private final CrowdFunRepository repo;
-    private final OtpRepository otpRepository;
 
-    public FetchByMessageIdController(CrowdFunRepository repo, OtpRepository otpRepository) {
+    public FetchByMessageIdController(CrowdFunRepository repo) {
         this.repo = repo;
-        this.otpRepository = otpRepository;
     }
    @GetMapping("/fetchByMessageId/{messageId}")
     public ResponseEntity<?> findPaymentByMessageId(@PathVariable String messageId) {
