@@ -1,7 +1,7 @@
 package com.dxvalley.nedajpaymnetbackend.otpservices.controller;
 import com.dxvalley.nedajpaymnetbackend.otpservices.exception.OtpCustomeException;
-import com.dxvalley.nedajpaymnetbackend.otpservices.payload.OtpRequest;
-import com.dxvalley.nedajpaymnetbackend.otpservices.services.OtpServices;
+import com.dxvalley.nedajpaymnetbackend.otpservices.payload.SendingOtpRequest;
+import com.dxvalley.nedajpaymnetbackend.otpservices.services.SendingOtpServices;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/payment/services/v1")
-public class OtpController {
+public class SendOtpController {
     @Autowired
-    private OtpServices otpServices;
+    private SendingOtpServices otpServices;
     @PostMapping(value = "/sendOtp")
-    public ResponseEntity<?> sendingOtpToUser(@RequestBody OtpRequest otpRequest){
+    public ResponseEntity<?> sendingOtpToUser(@RequestBody SendingOtpRequest otpRequest){
         try {
             String resultOtpSending =otpServices.registerAndSendOTp(otpRequest);
+
             JSONObject resultObject = new JSONObject(resultOtpSending);
             String respDesc = resultObject.getString("Response");
             String status = resultObject.getString("status");

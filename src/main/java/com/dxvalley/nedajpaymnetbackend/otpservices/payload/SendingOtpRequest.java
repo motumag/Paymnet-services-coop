@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OtpRequest {
+public class SendingOtpRequest {
     @JsonProperty("Mobile")
     private String Mobile;
     @JsonProperty("Text")

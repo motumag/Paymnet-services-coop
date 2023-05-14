@@ -2,7 +2,7 @@ package com.dxvalley.nedajpaymnetbackend.otpservices.services;
 
 import com.dxvalley.nedajpaymnetbackend.otpservices.exception.OtpCustomeException;
 import com.dxvalley.nedajpaymnetbackend.otpservices.repo.OtpRepository;
-import com.dxvalley.nedajpaymnetbackend.otpservices.payload.OtpRequest;
+import com.dxvalley.nedajpaymnetbackend.otpservices.payload.SendingOtpRequest;
 import com.dxvalley.nedajpaymnetbackend.otpservices.models.OtpSendModel;
 import org.json.JSONObject;
 import org.springframework.http.*;
@@ -13,28 +13,26 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.UUID;
 
 @Service
-public class OtpServices {
+public class SendingOtpServices {
     private final OtpRepository repository;
 
-    public OtpServices(OtpRepository repository) {
+    public SendingOtpServices(OtpRepository repository) {
         this.repository = repository;
     }
 
-    public String registerAndSendOTp(@RequestBody OtpRequest otpReq) throws OtpCustomeException {
+    public String registerAndSendOTp(@RequestBody SendingOtpRequest otpReq) throws OtpCustomeException {
         try {
             String generatedOtpNumber = generateAndRegisterOtp();
             OtpSendModel isOtpExist = repository.findByOtpNumber(generatedOtpNumber);
             ResponseEntity<String> res = null;
             if (isOtpExist != null) {
                 String statusCheck = isOtpExist.getStatus();
-                String failedDate = isOtpExist.getMobile();
                 if (statusCheck.equals("Success")) {
-                    throw new OtpCustomeException(409, "Invalid OTP");
+                    throw new OtpCustomeException(409, "The OTP has been used");
                 } else if (statusCheck.equals("Failure")) {
-                    throw new OtpCustomeException(409, "Failed because of: " + "On Date of" + " " + failedDate);
+                    throw new OtpCustomeException(409, "Failed because of: " + "On Date of" + " " + statusCheck);
                 } else {
                     throw new OtpCustomeException(409, "Unknown error");
                 }
@@ -45,7 +43,7 @@ public class OtpServices {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
                 otpReq.setText(generatedOtpNumber);
-                HttpEntity<OtpRequest> request = new HttpEntity<OtpRequest>(otpReq, headers);
+                HttpEntity<SendingOtpRequest> request = new HttpEntity<SendingOtpRequest>(otpReq, headers);
                 System.out.println("Request part:" + request);
                 res = restTemplate.exchange(uri, HttpMethod.POST, request, String.class);
                 System.out.println("Actual response is: " + res);
@@ -75,6 +73,7 @@ public class OtpServices {
             throw new OtpCustomeException(500, e.getMessage());
         }
     }
+//    public String otpConfirmationBeforePayment(@RequestBody)
 
     public String generateAndRegisterOtp() {
         int length = 6;
