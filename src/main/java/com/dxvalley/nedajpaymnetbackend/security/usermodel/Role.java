@@ -5,4 +5,6 @@ public enum Role {
     ADMIN,
     EQUB,
     SUPPER_ADMIN,
+    CROWDFUND,
+    NEDAJ
 }

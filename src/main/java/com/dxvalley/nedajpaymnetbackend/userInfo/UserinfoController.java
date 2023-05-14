@@ -10,16 +10,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/payment/services/v1/userinfo")
 public class UserinfoController {
     private final UserInfoService userInfoService;
+
     @Autowired
     public UserinfoController(UserInfoService userInfoService) {
         this.userInfoService = userInfoService;
     }
+
     @PostMapping
-    public ResponseEntity<String> userInfo(@RequestBody UserInfoRequest userInfoModel)
-    {
-        String  res =  userInfoService.userInfo(userInfoModel);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Content-Type", "application/json")
-                .body(res);
+    public ResponseEntity<String> userInfo(@RequestBody UserInfoRequest userInfoModel) {
+        try {
+            String res = userInfoService.userInfo(userInfoModel);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .header("Content-Type", "application/json")
+                    .body(res);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }

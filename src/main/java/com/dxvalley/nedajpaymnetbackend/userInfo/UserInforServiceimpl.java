@@ -13,7 +13,6 @@ public class UserInforServiceimpl implements UserInfoService{
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<UserInfoRequest> httpEntity = new HttpEntity<>(userInfoModel,headers);
             ResponseEntity<String> newPostEntity = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, String.class);
-
             String response = newPostEntity.getBody();
             return response;
         }catch (Exception e){

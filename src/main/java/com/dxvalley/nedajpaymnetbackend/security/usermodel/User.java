@@ -31,6 +31,7 @@ public class User implements UserDetails {
             nullable = false,
             unique = true)
     private String email;
+    private String restToken;
     private String password;
     private String clientKey;
     private String secretKey;
