@@ -17,4 +17,7 @@ public class NedajPaymentRequest {
     private String debitCurrency="ETB";
     private String debitNarrative="nedaj-pay";
     private String creditNarrative="nedajpay";
+    //for confirmation
+    private String confirmationOtpNumber;
+    private String phoneNumber;
 }
