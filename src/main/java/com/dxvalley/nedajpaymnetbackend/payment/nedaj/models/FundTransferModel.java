@@ -1,4 +1,4 @@
-package com.dxvalley.nedajpaymnetbackend.payment.nedaj;
+package com.dxvalley.nedajpaymnetbackend.payment.nedaj.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -7,7 +7,7 @@ import lombok.Data;
 @Entity
 @Table(name = "nedaj_payment")
 @Data
-public class NedajPaymentModel {
+public class FundTransferModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

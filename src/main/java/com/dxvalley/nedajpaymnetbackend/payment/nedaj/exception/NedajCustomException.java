@@ -1,4 +1,4 @@
-package com.dxvalley.nedajpaymnetbackend.payment.nedaj;
+package com.dxvalley.nedajpaymnetbackend.payment.nedaj.exception;
 
 public class NedajCustomException extends Exception {
     private int status;
