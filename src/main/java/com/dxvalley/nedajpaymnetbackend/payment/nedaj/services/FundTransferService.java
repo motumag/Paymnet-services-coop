@@ -70,7 +70,8 @@ public class FundTransferService {
             System.out.println("error?: "+otpSendModel);
             JSONObject resp=new JSONObject(otpSendModel);
             return resp.toString();
-        }catch (Exception e){
+        }
+        catch (Exception e){
             throw new OtpCustomeException(400,e.getMessage());
         }
     }

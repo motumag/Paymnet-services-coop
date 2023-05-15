@@ -31,7 +31,7 @@ public class SendOtpController {
             response.put("status", status);
             response.put("responseCode", respCode);
             response.put("Message", "OTP sent successfully done");
-            return ResponseEntity.status(HttpStatus.CREATED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .header("Content-Type", "application/json")
                     .body(response.toString());
         }catch (OtpCustomeException pe) {
