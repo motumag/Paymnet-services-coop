@@ -29,7 +29,7 @@ public class SendingOtpServices {
             ResponseEntity<String> res = null;
             if (isOtpExist != null) {
                 String statusCheck = isOtpExist.getStatus();
-                if (statusCheck.equals("Success")) {
+                if (statusCheck.equals("Confirmed")) {
                     throw new OtpCustomeException(409, "The OTP has been used");
                 } else if (statusCheck.equals("Failure")) {
                     throw new OtpCustomeException(409, "Failed because of: " + "On Date of" + " " + statusCheck);
@@ -69,8 +69,11 @@ public class SendingOtpServices {
             System.out.println("The final response is:" + responseAfterSendingOtp);
             return responseAfterSendingOtp.toString();
 
+        } catch (OtpCustomeException e) {
+            throw new OtpCustomeException(e.getStatus(), e.getMessage());
         } catch (Exception e) {
             throw new OtpCustomeException(500, e.getMessage());
+//            throw e;
         }
     }
 //    public String otpConfirmationBeforePayment(@RequestBody)

@@ -1,5 +1,12 @@
-package com.dxvalley.nedajpaymnetbackend.payment.nedaj;
+package com.dxvalley.nedajpaymnetbackend.payment.nedaj.services;
 
+import com.dxvalley.nedajpaymnetbackend.otpservices.exception.OtpCustomeException;
+import com.dxvalley.nedajpaymnetbackend.otpservices.models.OtpSendModel;
+import com.dxvalley.nedajpaymnetbackend.otpservices.repo.OtpRepository;
+import com.dxvalley.nedajpaymnetbackend.payment.nedaj.exception.NedajCustomException;
+import com.dxvalley.nedajpaymnetbackend.payment.nedaj.models.FundTransferModel;
+import com.dxvalley.nedajpaymnetbackend.payment.nedaj.repo.FundtransferRepository;
+import com.dxvalley.nedajpaymnetbackend.payment.nedaj.payloads.FundTransferRequest;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,14 +19,17 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 
 @Service
-public class NedajCoopasPaymentService {
+public class FundTransferService {
     @Autowired
-    private NedajPaymentRepository paymentRepo;
-    private static final Logger logger = LoggerFactory.getLogger(NedajPaymentRepository.class);
+    private FundtransferRepository paymentRepo;
+    @Autowired
+    private OtpRepository otpRepository;
+    private static final Logger logger = LoggerFactory.getLogger(FundtransferRepository.class);
 
-    public String processPayment(NedajPaymentRequest payment) throws NedajCustomException {
+    public String processPayment(FundTransferRequest payment) throws NedajCustomException {
         try {
             validatePayment(payment);
+           confirmationOtpNedajPayment(payment);
             return checkDuplicateTransaction(payment);
         } catch (NedajCustomException pe) {
             // rollback transaction and throw exception
@@ -30,8 +40,43 @@ public class NedajCoopasPaymentService {
             throw new NedajCustomException(500, e.getMessage());
         }
     }
+    public String confirmationOtpNedajPayment(FundTransferRequest request)throws OtpCustomeException{
+        try {
+            OtpSendModel otpSendModel=new OtpSendModel();
+            otpSendModel=otpRepository.findByOtpNumber(request.getConfirmationOtpNumber());
+            if (otpSendModel==null){
+                throw new OtpCustomeException(401,"OTP is not found");
+            }
+            String otpNumber=otpSendModel.getOtpNumber();
+            String mobileNumber=otpSendModel.getMobile();
+            String status=otpSendModel.getStatus();
+            if (!otpNumber.equals(request.getConfirmationOtpNumber())){
+                throw new OtpCustomeException(403,"Otp Mismatch");
+            }
+            if (!mobileNumber.equals(request.getPhoneNumber())){
+                throw new OtpCustomeException(403,"Phone Number Mismatch");
+            }
+            if (status.equals("Confirmed")){
+                throw new OtpCustomeException(409,"The OTP you provided has been already used");
+            }
+            if (status.equals("Failure")){
+                throw new OtpCustomeException(403,"Forbidden to use this OTP");
+            }
+            if (status.equals("Pending")){
+                System.out.println("momo");
+                otpSendModel.setStatus("Confirmed");
+                otpRepository.save(otpSendModel);
+            }
+            System.out.println("error?: "+otpSendModel);
+            JSONObject resp=new JSONObject(otpSendModel);
+            return resp.toString();
+        }
+        catch (Exception e){
+            throw new OtpCustomeException(400,e.getMessage());
+        }
+    }
 
-    private void validatePayment(NedajPaymentRequest payment) throws NedajCustomException {
+    private void validatePayment(FundTransferRequest payment) throws NedajCustomException {
         // perform validation checks
         if (payment.getDebitAmount().compareTo(String.valueOf(BigDecimal.ZERO)) <= 0) {
             logger.info("Payment amount should be greater than zero");
@@ -46,8 +91,8 @@ public class NedajCoopasPaymentService {
     }
 
     // first check if transaction is already exist
-    private String checkDuplicateTransaction(NedajPaymentRequest payment) throws NedajCustomException {
-        NedajPaymentModel transactions = paymentRepo.findByMessageId(payment.getMessageId());
+    private String checkDuplicateTransaction(FundTransferRequest payment) throws NedajCustomException {
+        FundTransferModel transactions = paymentRepo.findByMessageId(payment.getMessageId());
         if (transactions != null) {
             String statusCheck = transactions.getSTATUS();
             String failedDate = transactions.getTRANSACTION_DATE();
@@ -61,7 +106,7 @@ public class NedajCoopasPaymentService {
                 throw new NedajCustomException(409, "Failed because of: " + errorType + " " + "On Date of" + " " + failedDate);
             }
         } else {
-            NedajPaymentModel paymentModel = new NedajPaymentModel();
+            FundTransferModel paymentModel = new FundTransferModel();
             paymentModel.setMessageId(payment.getMessageId());
             paymentModel.setMerchantId(payment.getMerchantId());
             paymentModel.setAgentId(payment.getAgentId());
@@ -79,7 +124,7 @@ public class NedajCoopasPaymentService {
     }
 
     private void failureStatusUpdate(String messageId, String status, String errorType, String responseCode) throws NedajCustomException {
-        NedajPaymentModel checkFirstToUpdate = paymentRepo.findByMessageId(messageId);
+        FundTransferModel checkFirstToUpdate = paymentRepo.findByMessageId(messageId);
 
         if (checkFirstToUpdate == null) {
             throw new NedajCustomException(404, "No transaction with this message ID");
@@ -99,7 +144,7 @@ public class NedajCoopasPaymentService {
                                          String processingDate,
                                          String transactionDate,
                                          String responseCode) throws NedajCustomException {
-        NedajPaymentModel updateAfterPayment = paymentRepo.findByMessageId(messageId);
+        FundTransferModel updateAfterPayment = paymentRepo.findByMessageId(messageId);
         if (updateAfterPayment == null) {
             throw new NedajCustomException(404, "No transaction with this message ID");
         } else {
@@ -114,14 +159,14 @@ public class NedajCoopasPaymentService {
 
     }
 
-    private String fundtransferAppconnect(NedajPaymentRequest payment) throws NedajCustomException {
+    private String fundtransferAppconnect(FundTransferRequest payment) throws NedajCustomException {
         ResponseEntity<String> res = null;
         try {
             String uri = "http://10.1.245.151:7080/v3/ft/";
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<NedajPaymentRequest> request = new HttpEntity<NedajPaymentRequest>(payment, headers);
+            HttpEntity<FundTransferRequest> request = new HttpEntity<FundTransferRequest>(payment, headers);
             res = restTemplate.exchange(uri, HttpMethod.POST, request, String.class);
             System.out.println("Actual response is: " + res);
             JSONObject checkStatus = new JSONObject(res.getBody());

@@ -6,12 +6,10 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/payment/services/v1")
 public class SendOtpController {
     @Autowired
@@ -31,7 +29,7 @@ public class SendOtpController {
             response.put("status", status);
             response.put("responseCode", respCode);
             response.put("Message", "OTP sent successfully done");
-            return ResponseEntity.status(HttpStatus.CREATED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .header("Content-Type", "application/json")
                     .body(response.toString());
         }catch (OtpCustomeException pe) {

@@ -1,5 +1,8 @@
-package com.dxvalley.nedajpaymnetbackend.payment.nedaj;
+package com.dxvalley.nedajpaymnetbackend.payment.nedaj.controller;
 
+import com.dxvalley.nedajpaymnetbackend.payment.nedaj.payloads.FundTransferRequest;
+import com.dxvalley.nedajpaymnetbackend.payment.nedaj.exception.NedajCustomException;
+import com.dxvalley.nedajpaymnetbackend.payment.nedaj.services.FundTransferService;
 import jakarta.validation.Valid;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +18,13 @@ import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/payment/services/v1/nedaj")
-public class NedajPaymentController {
+public class FundTransferController {
     @Autowired
-    private NedajCoopasPaymentService paymentService;
-    private static final Logger logger = LoggerFactory.getLogger(NedajPaymentRequest.class);
+    private FundTransferService paymentService;
+    private static final Logger logger = LoggerFactory.getLogger(FundTransferRequest.class);
 
     @PostMapping
-    public ResponseEntity<?> processPayment(@Valid @RequestBody NedajPaymentRequest payment) {
+    public ResponseEntity<?> processPayment(@Valid @RequestBody FundTransferRequest payment) {
         try {
            String result =paymentService.processPayment(payment);
             JSONObject resultObject = new JSONObject(result);

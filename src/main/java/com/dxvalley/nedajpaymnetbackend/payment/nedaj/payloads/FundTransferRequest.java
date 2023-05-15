@@ -1,11 +1,11 @@
-package com.dxvalley.nedajpaymnetbackend.payment.nedaj;
+package com.dxvalley.nedajpaymnetbackend.payment.nedaj.payloads;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NedajPaymentRequest {
+public class FundTransferRequest {
     private Long id;
     private String merchantId;
     private String agentId;
@@ -17,4 +17,7 @@ public class NedajPaymentRequest {
     private String debitCurrency="ETB";
     private String debitNarrative="nedaj-pay";
     private String creditNarrative="nedajpay";
+    //for confirmation
+    private String confirmationOtpNumber;
+    private String phoneNumber;
 }

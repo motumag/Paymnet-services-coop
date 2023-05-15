@@ -1,9 +1,9 @@
-package com.dxvalley.nedajpaymnetbackend.payment.nedaj;
+package com.dxvalley.nedajpaymnetbackend.payment.nedaj.payloads;
 
 import lombok.Data;
 
 @Data
-public class NedajPaymentResponse {
+public class FundTransferResponse {
     private String transactionID;
     private String TRANSACTIONTYPE;
     private String DEBITACCTNO;
