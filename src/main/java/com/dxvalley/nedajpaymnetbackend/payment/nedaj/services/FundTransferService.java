@@ -29,7 +29,7 @@ public class FundTransferService {
     public String processPayment(FundTransferRequest payment) throws NedajCustomException {
         try {
             validatePayment(payment);
-            confirmationOtpNedajPayment(payment);
+           confirmationOtpNedajPayment(payment);
             return checkDuplicateTransaction(payment);
         } catch (NedajCustomException pe) {
             // rollback transaction and throw exception
