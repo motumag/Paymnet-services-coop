@@ -37,14 +37,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
 
-        String path = request.getRequestURI();
-        if (path.contains("/api/v1/auth/register") || path.contains("/api/v1/auth/authenticate")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        if(authHeader==null ||!authHeader.startsWith("Bearer ")){
-            handleMissingTokenException(response);
+//        String path = request.getRequestURI();
+//        if (path.contains("/api/v1/auth/register")
+//                || path.contains("/api/v1/auth/authenticate")
+//                ||path.contains("/api/v1/auth/docs/swagger-ui.html")) {
 //            filterChain.doFilter(request, response);
+//            return;
+//        }
+        if(authHeader==null ||!authHeader.startsWith("Bearer ")){
+//            handleMissingTokenException(response);
+            filterChain.doFilter(request, response);
             return;
         }
         //extract the jwt from header

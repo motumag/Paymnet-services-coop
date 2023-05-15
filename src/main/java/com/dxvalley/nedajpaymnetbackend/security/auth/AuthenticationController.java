@@ -69,8 +69,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
-        return ResponseEntity.ok(service.authenticate(request));
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) throws Exception {
+        try {
+            return ResponseEntity.ok(service.authenticate(request));
+        }catch (Exception e){
+            throw e;
+        }
     }
 
     @PostMapping("/refreshtoken")
