@@ -6,6 +6,7 @@ import com.dxvalley.nedajpaymnetbackend.security.exception.TokenRefreshException
 import com.dxvalley.nedajpaymnetbackend.security.repository.UserRepository;
 import com.dxvalley.nedajpaymnetbackend.security.usermodel.RefreshToken;
 import com.dxvalley.nedajpaymnetbackend.security.usermodel.User;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class AuthenticationController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
+    @Operation(summary = "User Registration")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) throws AuthenticationCustomeException {
         try {
             if (service.findByEmail(request.getEmail()).isPresent()) {
