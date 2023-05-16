@@ -9,9 +9,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @SpringBootApplication
 @OpenAPIDefinition(
         info = @Info(
-                title = "My API",
+                title = "Payment Service",
                 version = "1.0",
-                description = "My API documentation"
+                description = "Payment Service Backend @CoopBank"
         )
 )
 public class PaymentServicesApplication {
