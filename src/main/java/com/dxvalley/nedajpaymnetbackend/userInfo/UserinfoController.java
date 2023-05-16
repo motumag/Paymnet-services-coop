@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "*")
 @RestController
+@CrossOrigin("*")
 @RequestMapping(value = "/payment/services/v1/userinfo")
 public class UserinfoController {
     private final UserInfoService userInfoService;
