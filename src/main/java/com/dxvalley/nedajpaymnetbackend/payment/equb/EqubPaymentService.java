@@ -42,16 +42,16 @@ public class EqubPaymentService {
             throw new EqubCustomException(400, "Credit and debit accounts cannot be the same");
         }
         if (payment.getMessageId().isEmpty() || payment.getMessageId()==null)  {
-            logger.info("MessageId must have a value");
-            throw new EqubCustomException(400, "MessageId must have a value");
+            logger.info("Empty MessageID is not allowed");
+            throw new EqubCustomException(400, "Empty MessageID is not allowed");
         }
         if (payment.getDebitAccount().isEmpty() || payment.getDebitAccount()==null) {
-            logger.info("Debit Account should not be null");
-            throw new EqubCustomException(400, "Debit Account should not be null");
+            logger.info("Empty Debit Account is not allowed");
+            throw new EqubCustomException(400, "Empty Debit Account is not allowed");
         }
         if (payment.getCreditAccount().isEmpty() || payment.getCreditAccount()==null) {
             logger.info("Credit Account should not be null");
-            throw new EqubCustomException(400, "Credit Account should not be null");
+            throw new EqubCustomException(400, "Empty Credit Account is not allowed");
         }
     }
     // first check if transaction is already exist
