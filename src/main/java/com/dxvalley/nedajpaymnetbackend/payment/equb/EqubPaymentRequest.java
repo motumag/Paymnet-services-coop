@@ -13,6 +13,6 @@ public class EqubPaymentRequest {
     private String creditAccount;
     private String debitAmount;
     private final String debitCurrency="ETB";
-    private final String debitNarrative="CrowdFund Pay";
-    private final String creditNarrative="CrowdFund Pay";
+    private final String debitNarrative="Equb Payment";
+    private final String creditNarrative="Equb Payment";
 }
