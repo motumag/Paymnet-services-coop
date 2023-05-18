@@ -35,7 +35,6 @@ public class EqubPaymentService {
         if (payment.getDebitAmount().compareTo(String.valueOf(BigDecimal.ZERO)) <= 0) {
             logger.info("Payment amount should be greater than zero");
             throw new EqubCustomException(500, "Payment amount should be greater than zero");
-
         }
         // check if credit and debit accounts are not the same
         if (payment.getDebitAccount().equals(payment.getCreditAccount())) {
