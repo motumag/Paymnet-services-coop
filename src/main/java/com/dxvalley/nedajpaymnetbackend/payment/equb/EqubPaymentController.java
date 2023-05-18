@@ -53,7 +53,6 @@ public class EqubPaymentController {
             return ResponseEntity.status(pe.getStatus())
                     .header("Content-Type", "application/json")
                     .body(errorResponse.toString());
-//            return ResponseEntity.status(pe.getStatus()).body((pe.getMessage()));
         }
     }
 }

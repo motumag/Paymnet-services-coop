@@ -73,11 +73,6 @@ public class EqubPaymentService {
         }
         return null;
     }
-
-    private void addAmount(EqubPaymentRequest payment) throws EqubCustomException {
-        // check first if the record[if exist do not write it again]
-    }
-
     private void failureStatusUpdate(String messageId, String status, String errorType, String responseCode) throws EqubCustomException {
         EqubPaymentModel checkFirstToUpdate = paymentRepo.findByMessageId(messageId);
 
