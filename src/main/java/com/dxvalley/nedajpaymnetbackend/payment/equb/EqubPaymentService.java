@@ -41,15 +41,15 @@ public class EqubPaymentService {
             logger.info("Credit and debit accounts cannot be the same");
             throw new EqubCustomException(500, "Credit and debit accounts cannot be the same");
         }
-        if (payment.getMessageId()==null) {
+        if (payment.getMessageId().isEmpty() || payment.getMessageId()==null)  {
             logger.info("MessageId must have a value");
             throw new EqubCustomException(500, "MessageId must have a value");
         }
-        if (payment.getDebitAccount()==null) {
+        if (payment.getDebitAccount().isEmpty() || payment.getDebitAccount()==null) {
             logger.info("Debit Account should not be null");
             throw new EqubCustomException(500, "Debit Account should not be null");
         }
-        if (payment.getCreditAccount()==null) {
+        if (payment.getCreditAccount().isEmpty() || payment.getCreditAccount()==null) {
             logger.info("Credit Account should not be null");
             throw new EqubCustomException(500, "Credit Account should not be null");
         }
