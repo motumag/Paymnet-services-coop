@@ -34,24 +34,24 @@ public class EqubPaymentService {
         // perform validation checks
         if (payment.getDebitAmount().compareTo(String.valueOf(BigDecimal.ZERO)) <= 0) {
             logger.info("Payment amount should be greater than zero");
-            throw new EqubCustomException(500, "Payment amount should be greater than zero");
+            throw new EqubCustomException(400, "Payment amount should be greater than zero");
         }
         // check if credit and debit accounts are not the same
         if (payment.getDebitAccount().equals(payment.getCreditAccount())) {
             logger.info("Credit and debit accounts cannot be the same");
-            throw new EqubCustomException(500, "Credit and debit accounts cannot be the same");
+            throw new EqubCustomException(400, "Credit and debit accounts cannot be the same");
         }
         if (payment.getMessageId().isEmpty() || payment.getMessageId()==null)  {
             logger.info("MessageId must have a value");
-            throw new EqubCustomException(500, "MessageId must have a value");
+            throw new EqubCustomException(400, "MessageId must have a value");
         }
         if (payment.getDebitAccount().isEmpty() || payment.getDebitAccount()==null) {
             logger.info("Debit Account should not be null");
-            throw new EqubCustomException(500, "Debit Account should not be null");
+            throw new EqubCustomException(400, "Debit Account should not be null");
         }
         if (payment.getCreditAccount().isEmpty() || payment.getCreditAccount()==null) {
             logger.info("Credit Account should not be null");
-            throw new EqubCustomException(500, "Credit Account should not be null");
+            throw new EqubCustomException(400, "Credit Account should not be null");
         }
     }
     // first check if transaction is already exist
