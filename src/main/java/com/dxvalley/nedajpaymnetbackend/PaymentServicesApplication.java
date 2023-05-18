@@ -24,10 +24,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
                         name = "Apache 2.0",
                         url = "https://www.apache.org/licenses/LICENSE-2.0"
                 )
-        ),
-        security = {
-                @SecurityRequirement(name = "bearerToken")
-        }
+        )
 )
 public class PaymentServicesApplication {
 
