@@ -40,7 +40,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         if (path.contains("/api/v1/auth/register")
                 || path.contains("/api/v1/auth/authenticate")
-                ||path.contains("/api/docs/")) {
+                ||path.contains("/api/docs/")
+                ||path.contains("/swagger-ui.html")
+                ||path.contains("/swagger-ui/")
+                ||path.contains("/v3/api-docs/")) {
             filterChain.doFilter(request, response);
             return;
         }
