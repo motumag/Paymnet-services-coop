@@ -4,9 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
+@Service
 public class EqubPaymentService {
 
     @Autowired
@@ -17,8 +19,6 @@ public class EqubPaymentService {
         try {
             validatePayment(payment);
             return checkDuplicateTransaction(payment);
-            //Register here the request part as a pending status, then change to complete after we get success from app connect
-//            defaultCreatePendingStatus(payment);
         } catch (EqubCustomException pe) {
             // rollback transaction and throw exception
             logger.error("Payment exception: {}", pe.getMessage());
@@ -42,8 +42,19 @@ public class EqubPaymentService {
             logger.info("Credit and debit accounts cannot be the same");
             throw new EqubCustomException(500, "Credit and debit accounts cannot be the same");
         }
+        if (payment.getMessageId()==null) {
+            logger.info("MessageId must have a value");
+            throw new EqubCustomException(500, "MessageId must have a value");
+        }
+        if (payment.getDebitAccount()==null) {
+            logger.info("Debit Account should not be null");
+            throw new EqubCustomException(500, "Debit Account should not be null");
+        }
+        if (payment.getCreditAccount()==null) {
+            logger.info("Credit Account should not be null");
+            throw new EqubCustomException(500, "Credit Account should not be null");
+        }
     }
-
     // first check if transaction is already exist
     private String checkDuplicateTransaction(EqubPaymentRequest payment) throws EqubCustomException {
         EqubPaymentModel transactions = paymentRepo.findByMessageId(payment.getMessageId());
