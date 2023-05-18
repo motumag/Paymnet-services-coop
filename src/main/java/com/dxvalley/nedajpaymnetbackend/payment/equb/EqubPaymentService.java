@@ -116,7 +116,7 @@ public class EqubPaymentService {
     private String fundtransferAppconnect(EqubPaymentRequest payment) throws EqubCustomException {
         ResponseEntity<String> res = null;
         try {
-            String uri = "http://10.1.245.151:7080/v3/ft/";
+            String uri = "http://10.1.245.150:7081/v3/ft/";
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
