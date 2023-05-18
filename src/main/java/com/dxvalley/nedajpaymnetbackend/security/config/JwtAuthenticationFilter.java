@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader=request.getHeader("Authorization");// To get token from the authorization
         final String jwt;
         final String userEmail;
-
+        System.out.println("Configuration for prod");
         String path = request.getRequestURI();
         if (path.contains("/api/v1/auth/register")
                 || path.contains("/api/v1/auth/authenticate")
